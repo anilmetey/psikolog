@@ -169,16 +169,30 @@
 
     <!-- Premium Cinematic Splash Screen -->
     <div id="splash" class="fixed inset-0 z-[99999] bg-brand-300 flex items-center justify-center overflow-hidden">
-        <div class="relative z-10 flex flex-col items-center">
-            <!-- Dynamic Words -->
-            <div class="h-16 md:h-24 flex items-center justify-center overflow-hidden mb-6 px-4 w-full">
-                <h1 id="splash-text" class="text-3xl md:text-5xl font-serif text-white tracking-[0.2em] font-light transform translate-y-full opacity-0 transition-all duration-500 ease-out text-center">Farkındalık.</h1>
+        
+        <div class="relative z-10 flex flex-col items-center justify-center w-full h-full">
+            
+            <!-- Dynamic Words Container -->
+            <div id="splash-words-container" class="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500">
+                <div class="h-16 md:h-24 flex items-center justify-center overflow-hidden mb-6 px-4 w-full">
+                    <h1 id="splash-text" class="text-3xl md:text-5xl font-serif text-white tracking-[0.2em] font-light transform translate-y-full opacity-0 transition-all duration-500 ease-out text-center">Farkındalık.</h1>
+                </div>
+                
+                <!-- Progress Line -->
+                <div class="w-48 md:w-64 h-[1px] bg-white/30 relative overflow-hidden rounded-full">
+                    <div id="splash-progress" class="absolute top-0 left-0 h-full w-0 bg-white transition-all duration-[3000ms] ease-out"></div>
+                </div>
+            </div>
+
+            <!-- Final Logo Reveal -->
+            <div id="splash-final" class="absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-all duration-1000 transform scale-95">
+                <div class="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border border-white/40 shadow-2xl mb-8">
+                    <img src="portrait.jpg" alt="Logo" class="w-full h-full object-cover object-top">
+                </div>
+                <h1 class="text-3xl md:text-4xl font-serif text-white tracking-widest font-medium mb-3">Örnek Kişi</h1>
+                <p class="text-[10px] md:text-xs uppercase tracking-[0.3em] text-brand-100">Klinik Psikolog</p>
             </div>
             
-            <!-- Progress Line -->
-            <div class="w-48 md:w-64 h-[1px] bg-white/30 relative overflow-hidden rounded-full">
-                <div id="splash-progress" class="absolute top-0 left-0 h-full w-0 bg-white transition-all duration-[2400ms] ease-out"></div>
-            </div>
         </div>
     </div>
 
@@ -569,6 +583,8 @@
             const splash = document.getElementById('splash');
             const splashText = document.getElementById('splash-text');
             const splashProgress = document.getElementById('splash-progress');
+            const wordsContainer = document.getElementById('splash-words-container');
+            const splashFinal = document.getElementById('splash-final');
             
             const words = ["Farkındalık.", "Denge.", "İyileşme."];
             let wordIndex = 0;
@@ -587,40 +603,50 @@
                 splashText.classList.add('translate-y-0', 'opacity-100');
                 
                 setTimeout(() => {
-                    // If not the last word, animate out
-                    if (wordIndex < words.length - 1) {
-                        splashText.classList.remove('translate-y-0', 'opacity-100');
-                        splashText.classList.add('-translate-y-full', 'opacity-0');
+                    // Animate word out
+                    splashText.classList.remove('translate-y-0', 'opacity-100');
+                    splashText.classList.add('-translate-y-full', 'opacity-0');
+                    
+                    setTimeout(() => {
+                        // Reset position for next word
+                        splashText.classList.remove('-translate-y-full');
+                        splashText.classList.add('translate-y-full');
+                        wordIndex++;
                         
-                        setTimeout(() => {
-                            // Reset position for next word
-                            splashText.classList.remove('-translate-y-full');
-                            splashText.classList.add('translate-y-full');
-                            wordIndex++;
+                        if (wordIndex < words.length) {
                             showWord();
-                        }, 400); // Wait for fade out
-                    }
-                }, 700); // How long the word stays visible
+                        } else {
+                            // 3. Words finished, hide text/progress, show final logo
+                            wordsContainer.classList.add('opacity-0');
+                            
+                            setTimeout(() => {
+                                // Show final logo
+                                splashFinal.classList.remove('opacity-0', 'scale-95');
+                                splashFinal.classList.add('opacity-100', 'scale-100');
+                                
+                                // 4. Final reveal (curtain swipe up)
+                                setTimeout(() => {
+                                    splash.style.transform = 'translateY(-100%)';
+                                    
+                                    setTimeout(() => {
+                                        splash.style.display = 'none';
+                                        // Initialize AOS
+                                        AOS.init({
+                                            duration: 800,
+                                            once: true,
+                                            offset: 100,
+                                            easing: 'ease-out'
+                                        });
+                                    }, 1000); // match transition duration
+                                }, 1800); // How long final logo stays on screen
+                            }, 300); // delay after hiding words
+                        }
+                    }, 400); // Wait for fade out
+                }, 600); // How long the word stays visible
             };
 
             // Start word cycle
             setTimeout(showWord, 200);
-
-            // 3. Final reveal (curtain swipe up)
-            setTimeout(() => {
-                splash.style.transform = 'translateY(-100%)';
-                
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    // Initialize AOS after splash is gone
-                    AOS.init({
-                        duration: 800,
-                        once: true,
-                        offset: 100,
-                        easing: 'ease-out'
-                    });
-                }, 1000); // match transition duration
-            }, 2700); // Total splash time before swipe up
         });
     </script>
 </body>
