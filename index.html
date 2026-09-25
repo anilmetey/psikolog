@@ -120,6 +120,17 @@
 </head>
 <body class="antialiased selection:bg-brand-300 selection:text-white">
 
+    <!-- Elegant Corporate Splash Screen -->
+    <div id="splash" class="fixed inset-0 z-[99999] bg-brand-50 flex items-center justify-center transition-opacity duration-1000 ease-out">
+        <div class="flex flex-col items-center opacity-0 transition-all duration-1000 transform translate-y-4" id="splash-content">
+            <div class="w-16 h-16 bg-brand-900 text-white flex items-center justify-center font-serif text-3xl rounded-sm mb-6 shadow-md transition-transform duration-1000" id="splash-logo">
+                P
+            </div>
+            <h1 class="text-2xl font-serif text-brand-900 tracking-widest font-medium">Uzm. Psk. Örnek Kişi</h1>
+            <div class="w-12 h-[1px] bg-brand-400 mt-4"></div>
+        </div>
+    </div>
+
     <!-- Top Bar -->
     <div class="bg-brand-900 text-brand-100 text-[11px] uppercase tracking-widest py-2 px-6 hidden md:block">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
@@ -251,7 +262,7 @@
                     </div>
                     <!-- Bigger Signature -->
                     <div class="ml-0 md:ml-12 mt-6 md:mt-0 opacity-80">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Signature_of_John_Hancock.svg/1200px-Signature_of_John_Hancock.svg.png" alt="İmza" class="h-20 mix-blend-multiply filter contrast-125 grayscale">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Signature_of_John_Hancock.svg/1200px-Signature_of_John_Hancock.svg.png" alt="İmza" class="h-16 mix-blend-multiply filter contrast-125 grayscale">
                         <p class="text-[10px] text-gray-400 mt-2 tracking-widest uppercase">Uzm. Psk. Örnek Kişi</p>
                     </div>
                 </div>
@@ -271,7 +282,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Card 1 -->
                 <div class="service-card p-10 rounded-sm flex flex-col" data-aos="fade-up" data-aos-delay="100">
-                    <div class="text-6xl font-serif text-brand-300 mb-6 font-medium">01</div>
+                    <div class="text-5xl font-serif text-brand-300 mb-6 font-medium">01</div>
                     <h4 class="text-2xl font-serif text-brand-900 mb-4">Bireysel Psikoterapi</h4>
                     <p class="text-gray-600 font-light text-sm leading-relaxed mb-6 flex-1">
                         Depresyon, anksiyete, panik bozukluk, özgüven eksikliği ve hayatın getirdiği duygusal zorluklarla başa çıkmak için güvenli bir alan oluşturuyoruz. Yargısız bir ortamda kendinizi yeniden keşfedin.
@@ -283,7 +294,7 @@
                 
                 <!-- Card 2 -->
                 <div class="service-card p-10 rounded-sm flex flex-col" data-aos="fade-up" data-aos-delay="200">
-                    <div class="text-6xl font-serif text-brand-300 mb-6 font-medium">02</div>
+                    <div class="text-5xl font-serif text-brand-300 mb-6 font-medium">02</div>
                     <h4 class="text-2xl font-serif text-brand-900 mb-4">Çift Terapisi</h4>
                     <p class="text-gray-600 font-light text-sm leading-relaxed mb-6 flex-1">
                         İletişim problemleri, çatışma çözümü, aldatma, güven inşası ve duygusal bağı güçlendirmek üzerine çiftlerle yürütülen bilimsel ve objektif danışmanlık süreci.
@@ -295,7 +306,7 @@
 
                 <!-- Card 3 -->
                 <div class="service-card p-10 rounded-sm flex flex-col" data-aos="fade-up" data-aos-delay="300">
-                    <div class="text-6xl font-serif text-brand-300 mb-6 font-medium">03</div>
+                    <div class="text-5xl font-serif text-brand-300 mb-6 font-medium">03</div>
                     <h4 class="text-2xl font-serif text-brand-900 mb-4">Travma ve EMDR</h4>
                     <p class="text-gray-600 font-light text-sm leading-relaxed mb-6 flex-1">
                         Geçmiş travmatik deneyimlerin (kaza, kayıp, istismar) bugün üzerindeki olumsuz etkilerini dünyaca kabul görmüş EMDR tekniği ile çalışarak kalıcı iyileşme sağlıyoruz.
@@ -431,11 +442,30 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100,
-            easing: 'ease-out'
+        // Splash Screen Logic
+        window.addEventListener('load', () => {
+            const splash = document.getElementById('splash');
+            const splashContent = document.getElementById('splash-content');
+            
+            // Fade in content slightly
+            setTimeout(() => {
+                splashContent.classList.remove('opacity-0', 'translate-y-4');
+            }, 100);
+
+            // Fade out splash
+            setTimeout(() => {
+                splash.classList.add('opacity-0');
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    // Initialize AOS after splash is gone
+                    AOS.init({
+                        duration: 800,
+                        once: true,
+                        offset: 100,
+                        easing: 'ease-out'
+                    });
+                }, 1000); // match transition duration
+            }, 1200);
         });
     </script>
 </body>
