@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Klinik Psikolog | Örnek Tasarım</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -53,25 +53,37 @@
             transition: all 0.4s ease;
         }
 
-        /* Hero Background */
+        /* Hero Background - FIXED FOR MOBILE (iOS Bug) */
         .hero-bg {
             background-image: url('portrait.jpg');
             background-size: cover;
             background-position: center 20%;
-            background-attachment: fixed; /* Parallax effect */
+            background-attachment: scroll; /* Essential for mobile/iOS */
         }
+        @media (min-width: 768px) {
+            .hero-bg {
+                background-attachment: fixed; /* Parallax effect for desktop only */
+            }
+        }
+        
         .hero-overlay {
-            background: linear-gradient(to right, rgba(26,26,26,0.85) 0%, rgba(26,26,26,0.3) 100%);
+            background: linear-gradient(to right, rgba(26,26,26,0.9) 0%, rgba(26,26,26,0.5) 50%, rgba(26,26,26,0.3) 100%);
+        }
+        
+        @media (max-width: 767px) {
+            .hero-overlay {
+                background: linear-gradient(to bottom, rgba(26,26,26,0.7) 0%, rgba(26,26,26,0.85) 100%);
+            }
         }
 
-        /* Marquee Animation (Optimized to prevent freezing/stuttering) */
+        /* Marquee Animation */
         .marquee-wrapper {
             overflow: hidden;
             white-space: nowrap;
             display: flex;
             background-color: #1a1a1a;
             color: #f0ece5;
-            padding: 1.5rem 0;
+            padding: 1.25rem 0;
             width: 100%;
         }
         .marquee-content {
@@ -80,10 +92,16 @@
             will-change: transform; /* Hardware acceleration */
         }
         .marquee-content span {
-            padding: 0 3rem;
-            font-size: 0.85rem;
+            padding: 0 2rem;
+            font-size: 0.75rem;
             letter-spacing: 0.25em;
             text-transform: uppercase;
+        }
+        @media (min-width: 768px) {
+            .marquee-content span {
+                padding: 0 3rem;
+                font-size: 0.85rem;
+            }
         }
         @keyframes scroll {
             0% { transform: translate3d(0, 0, 0); }
@@ -170,34 +188,47 @@
     <!-- Premium Cinematic Splash Screen -->
     <div id="splash" class="fixed inset-0 z-[99999] bg-brand-300 flex items-center justify-center overflow-hidden">
         
-        <div class="relative z-10 flex flex-col items-center justify-center w-full h-full">
+        <div class="relative z-10 flex flex-col items-center justify-center w-full h-full px-6">
             
             <!-- Dynamic Words Container -->
             <div id="splash-words-container" class="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500">
-                <div class="h-16 md:h-24 flex items-center justify-center overflow-hidden mb-6 px-4 w-full">
-                    <h1 id="splash-text" class="text-3xl md:text-5xl font-serif text-white tracking-[0.2em] font-light transform translate-y-full opacity-0 transition-all duration-500 ease-out text-center">Farkındalık.</h1>
+                <div class="h-20 md:h-24 flex items-center justify-center overflow-hidden mb-8 w-full">
+                    <h1 id="splash-text" class="text-3xl md:text-5xl font-serif text-white tracking-[0.15em] md:tracking-[0.2em] font-light transform translate-y-full opacity-0 transition-all duration-500 ease-out text-center">Farkındalık.</h1>
                 </div>
                 
                 <!-- Progress Line -->
-                <div class="w-48 md:w-64 h-[1px] bg-white/30 relative overflow-hidden rounded-full">
+                <div class="w-full max-w-[200px] md:max-w-xs h-[1px] bg-white/30 relative overflow-hidden rounded-full">
                     <div id="splash-progress" class="absolute top-0 left-0 h-full w-0 bg-white transition-all duration-[3000ms] ease-out"></div>
                 </div>
             </div>
 
             <!-- Final Logo Reveal -->
-            <div id="splash-final" class="absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-all duration-1000 transform scale-95">
-                <div class="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border border-white/40 shadow-2xl mb-8">
+            <div id="splash-final" class="absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-all duration-1000 transform scale-95 px-6 text-center">
+                <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border border-white/40 shadow-2xl mb-6 md:mb-8">
                     <img src="portrait.jpg" alt="Logo" class="w-full h-full object-cover object-top">
                 </div>
-                <h1 class="text-3xl md:text-4xl font-serif text-white tracking-widest font-medium mb-3">Örnek Kişi</h1>
+                <h1 class="text-2xl md:text-4xl font-serif text-white tracking-widest font-medium mb-3">Örnek Kişi</h1>
                 <p class="text-[10px] md:text-xs uppercase tracking-[0.3em] text-brand-100">Klinik Psikolog</p>
             </div>
             
         </div>
     </div>
 
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-brand-900/98 backdrop-blur-md z-[100] transform translate-x-full transition-transform duration-500 flex flex-col items-center justify-center">
+        <button id="close-menu" class="absolute top-6 right-6 text-white text-3xl opacity-80 hover:opacity-100 transition"><i class="fas fa-times"></i></button>
+        <div class="flex flex-col items-center gap-8 text-white text-lg font-serif tracking-widest uppercase">
+            <a href="#anasayfa" class="mobile-link hover:text-brand-400 transition">Anasayfa</a>
+            <a href="#hakkimda" class="mobile-link hover:text-brand-400 transition">Hakkımda</a>
+            <a href="#hizmetler" class="mobile-link hover:text-brand-400 transition">Uzmanlıklar</a>
+            <a href="#surec" class="mobile-link hover:text-brand-400 transition">Süreç</a>
+            <a href="#iletisim" class="mobile-link hover:text-brand-400 transition">İletişim</a>
+            <a href="https://wa.me/905000000000" class="mt-8 bg-brand-500 text-white px-8 py-3 text-sm rounded-sm font-sans tracking-widest"><i class="fab fa-whatsapp"></i> Randevu Al</a>
+        </div>
+    </div>
+
     <!-- Floating WhatsApp -->
-    <a href="https://wa.me/905000000000" target="_blank" class="fixed bottom-8 right-8 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-xl hover:scale-110 hover:bg-[#1ebd57] transition-all duration-300 z-[90]">
+    <a href="https://wa.me/905000000000" target="_blank" class="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-[#25D366] text-white w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-2xl md:text-3xl shadow-xl hover:scale-110 hover:bg-[#1ebd57] transition-all duration-300 z-[90]">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -217,16 +248,16 @@
 
     <!-- Professional Navbar -->
     <nav class="navbar sticky top-0 z-50">
-        <div class="max-w-[85rem] mx-auto px-6 lg:px-8 py-5 flex justify-between items-center">
+        <div class="max-w-[85rem] mx-auto px-5 md:px-6 lg:px-8 py-4 md:py-5 flex justify-between items-center">
             
             <!-- Logo Section with Image -->
-            <div class="flex items-center gap-4 cursor-pointer" onclick="window.scrollTo(0,0)">
-                <div class="w-12 h-12 rounded-full overflow-hidden border border-brand-200 shadow-sm shrink-0">
+            <div class="flex items-center gap-3 md:gap-4 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-brand-200 shadow-sm shrink-0">
                     <img src="portrait.jpg" alt="Logo" class="w-full h-full object-cover object-top">
                 </div>
-                <div class="flex flex-col justify-center border-l pl-4 border-gray-200">
-                    <span class="text-xl font-serif text-brand-900 tracking-wide leading-none">Örnek Kişi</span>
-                    <span class="text-[9.5px] text-brand-500 uppercase tracking-[0.25em] mt-1.5 font-medium">Klinik Psikolog</span>
+                <div class="flex flex-col justify-center border-l pl-3 md:pl-4 border-gray-200">
+                    <span class="text-lg md:text-xl font-serif text-brand-900 tracking-wide leading-none">Örnek Kişi</span>
+                    <span class="text-[8px] md:text-[9.5px] text-brand-500 uppercase tracking-[0.2em] md:tracking-[0.25em] mt-1 md:mt-1.5 font-medium">Klinik Psikolog</span>
                 </div>
             </div>
             
@@ -247,39 +278,39 @@
             </div>
             
             <!-- Mobile Menu Icon -->
-            <div class="md:hidden text-2xl text-brand-900 cursor-pointer">
+            <div id="open-menu" class="lg:hidden text-2xl text-brand-900 cursor-pointer p-2 -mr-2">
                 <i class="fas fa-bars"></i>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section with Rotating Text -->
-    <section id="anasayfa" class="hero-bg min-h-[85vh] relative flex items-center">
+    <section id="anasayfa" class="hero-bg min-h-[90vh] md:min-h-[85vh] relative flex items-center pt-20 md:pt-0">
         <div class="absolute inset-0 hero-overlay"></div>
-        <div class="max-w-[85rem] mx-auto w-full px-6 lg:px-8 relative z-10">
+        <div class="max-w-[85rem] mx-auto w-full px-6 lg:px-8 relative z-10 flex flex-col justify-center">
             <div class="max-w-2xl" data-aos="fade-up" data-aos-duration="1200">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-[1px] bg-brand-400"></div>
-                    <span class="text-[11px] uppercase tracking-[0.3em] text-brand-200 font-medium shadow-sm">Online & Yüz Yüze Psikoterapi</span>
+                <div class="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
+                    <div class="w-8 md:w-12 h-[1px] bg-brand-400"></div>
+                    <span class="text-[9px] md:text-[11px] uppercase tracking-[0.2em] md:tracking-[0.3em] text-brand-200 font-medium shadow-sm">Online & Yüz Yüze Terapi</span>
                 </div>
                 
-                <!-- Rotating Text Wrapper -->
-                <div class="min-h-[220px] md:min-h-[250px]">
-                    <h2 id="hero-title" class="text-5xl md:text-6xl lg:text-[4.5rem] font-serif text-white leading-[1.1] mb-8 drop-shadow-lg transition-opacity duration-700 ease-in-out">
+                <!-- Rotating Text Wrapper - increased height for mobile to prevent jumping -->
+                <div class="min-h-[200px] sm:min-h-[180px] md:min-h-[250px] mb-8 md:mb-0">
+                    <h2 id="hero-title" class="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-serif text-white leading-[1.15] mb-6 md:mb-8 drop-shadow-lg transition-opacity duration-700 ease-in-out">
                         İçsel huzura <br>
                         <span class="italic font-light text-brand-300">giden yolu</span> <br>
                         keşfedin.
                     </h2>
-                    <p id="hero-desc" class="text-lg text-brand-100 mb-10 font-light leading-relaxed max-w-lg drop-shadow-md transition-opacity duration-700 ease-in-out">
+                    <p id="hero-desc" class="text-base md:text-lg text-brand-100 font-light leading-relaxed max-w-lg drop-shadow-md transition-opacity duration-700 ease-in-out">
                         Güvenli ve şefkatli bir alanda, kendi potansiyelinizi yeniden inşa etmek için bilimsel temelli psikolojik danışmanlık.
                     </p>
                 </div>
                 
-                <div class="flex flex-col sm:flex-row items-center gap-4">
-                    <a href="https://wa.me/905000000000" target="_blank" class="w-full sm:w-auto btn-solid px-8 py-4 text-sm uppercase tracking-widest rounded-sm flex items-center justify-center gap-3">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-4 md:mt-10">
+                    <a href="https://wa.me/905000000000" target="_blank" class="w-full sm:w-auto btn-solid px-6 md:px-8 py-4 text-xs md:text-sm uppercase tracking-widest rounded-sm flex items-center justify-center gap-3 text-center">
                         <i class="fab fa-whatsapp text-lg"></i> Ön Görüşme Ayarla
                     </a>
-                    <a href="#hizmetler" class="w-full sm:w-auto border border-brand-200 text-brand-100 hover:bg-white hover:text-brand-900 transition-all duration-300 px-8 py-4 text-sm uppercase tracking-widest rounded-sm flex items-center justify-center">
+                    <a href="#hizmetler" class="w-full sm:w-auto border border-brand-200 text-brand-100 hover:bg-white hover:text-brand-900 transition-all duration-300 px-6 md:px-8 py-4 text-xs md:text-sm uppercase tracking-widest rounded-sm flex items-center justify-center text-center">
                         Hizmetleri İncele
                     </a>
                 </div>
@@ -291,38 +322,38 @@
     <div class="marquee-wrapper border-y border-brand-900 shadow-inner">
         <!-- Duplicate content for seamless scrolling -->
         <div class="marquee-content">
-            <span>Bireysel Psikoterapi</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
-            <span>Çift Danışmanlığı</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
-            <span>EMDR Terapisi</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
-            <span>Bilişsel Davranışçı Terapi</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
-            <span>Ergen Psikoterapisi</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
-            <span>Aile Danışmanlığı</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
-            <span>Travma Terapisi</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
+            <span>Bireysel Psikoterapi</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
+            <span>Çift Danışmanlığı</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
+            <span>EMDR Terapisi</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
+            <span>Bilişsel Davranışçı Terapi</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
+            <span>Ergen Psikoterapisi</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
+            <span>Aile Danışmanlığı</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
+            <span>Travma Terapisi</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
             <!-- Repeat for loop -->
-            <span>Bireysel Psikoterapi</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
-            <span>Çift Danışmanlığı</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
-            <span>EMDR Terapisi</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
-            <span>Bilişsel Davranışçı Terapi</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
-            <span>Ergen Psikoterapisi</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
-            <span>Aile Danışmanlığı</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
-            <span>Travma Terapisi</span><span><i class="fas fa-asterisk text-brand-500 text-[8px]"></i></span>
+            <span>Bireysel Psikoterapi</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
+            <span>Çift Danışmanlığı</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
+            <span>EMDR Terapisi</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
+            <span>Bilişsel Davranışçı Terapi</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
+            <span>Ergen Psikoterapisi</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
+            <span>Aile Danışmanlığı</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
+            <span>Travma Terapisi</span><span><i class="fas fa-asterisk text-brand-500 text-[6px] md:text-[8px]"></i></span>
         </div>
     </div>
 
     <!-- Hakkımda Section -->
-    <section id="hakkimda" class="py-24 px-6 bg-white">
-        <div class="max-w-[85rem] mx-auto flex flex-col lg:flex-row gap-16 items-center">
-            <div class="w-full lg:w-5/12 relative" data-aos="fade-right">
+    <section id="hakkimda" class="py-16 md:py-24 px-6 bg-white overflow-hidden">
+        <div class="max-w-[85rem] mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+            <div class="w-full md:w-4/5 lg:w-5/12 relative" data-aos="fade-right">
                 <!-- Decorative Frame -->
-                <div class="absolute inset-0 bg-brand-100 translate-x-4 translate-y-4 rounded-sm -z-10"></div>
+                <div class="absolute inset-0 bg-brand-100 translate-x-3 translate-y-3 md:translate-x-4 md:translate-y-4 rounded-sm -z-10"></div>
                 <div class="overflow-hidden rounded-sm shadow-lg">
                     <img src="portrait.jpg" alt="Psikolog" class="w-full h-auto object-cover aspect-[4/5] hover:scale-105 transition-transform duration-1000 cursor-pointer object-top">
                 </div>
             </div>
-            <div class="w-full lg:w-7/12 lg:pl-10" data-aos="fade-left">
-                <h3 class="text-[11px] uppercase tracking-[0.3em] text-brand-500 mb-4 font-semibold">Hakkımda</h3>
-                <h2 class="text-4xl md:text-5xl font-serif text-brand-900 leading-tight mb-8">Benim için terapi, <br><span class="italic text-brand-500">anlaşılma</span> sanatıdır.</h2>
-                <div class="space-y-6 text-gray-600 font-light leading-relaxed text-lg">
+            <div class="w-full lg:w-7/12 lg:pl-10 text-center md:text-left" data-aos="fade-left">
+                <h3 class="text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-brand-500 mb-4 font-semibold">Hakkımda</h3>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-serif text-brand-900 leading-tight mb-6 md:mb-8">Benim için terapi, <br><span class="italic text-brand-500">anlaşılma</span> sanatıdır.</h2>
+                <div class="space-y-4 md:space-y-6 text-gray-600 font-light leading-relaxed text-base md:text-lg text-justify md:text-left">
                     <p>
                         Yıllardır farklı yaş gruplarından yüzlerce danışanımla, hayatın karmaşık dönemlerini anlamlandırmak ve içsel dengelerini yeniden kurmak üzerine çalışıyorum. 
                     </p>
@@ -331,69 +362,69 @@
                     </p>
                 </div>
                 
-                <div class="mt-12 flex flex-col md:flex-row items-start md:items-center gap-10 border-t border-brand-100 pt-8">
-                    <div class="flex items-center gap-5">
-                        <div class="w-14 h-14 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 text-xl shadow-sm">
+                <div class="mt-10 md:mt-12 flex flex-col sm:flex-row items-center sm:items-center justify-center md:justify-start gap-8 md:gap-10 border-t border-brand-100 pt-8">
+                    <div class="flex items-center gap-4 md:gap-5">
+                        <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 text-lg md:text-xl shadow-sm shrink-0">
                             <i class="fas fa-certificate"></i>
                         </div>
-                        <div>
-                            <p class="font-serif text-2xl text-brand-900 leading-none mb-1">10+ Yıl</p>
-                            <p class="text-[10px] text-gray-500 uppercase tracking-widest">Klinik Tecrübe</p>
+                        <div class="text-left">
+                            <p class="font-serif text-xl md:text-2xl text-brand-900 leading-none mb-1">10+ Yıl</p>
+                            <p class="text-[9px] md:text-[10px] text-gray-500 uppercase tracking-widest">Klinik Tecrübe</p>
                         </div>
                     </div>
                     <!-- Signature via Web Font (Always Works) -->
-                    <div class="ml-0 md:ml-12 mt-4 md:mt-0 opacity-90 border-l-0 md:border-l border-brand-100 md:pl-10">
-                        <p class="font-signature text-5xl text-brand-800 transform -rotate-3 select-none">Örnek Kişi</p>
-                        <p class="text-[10px] text-gray-400 mt-1 tracking-widest uppercase text-center md:text-left">Uzm. Psk. Örnek Kişi</p>
+                    <div class="opacity-90 sm:border-l border-brand-100 sm:pl-8 text-center sm:text-left">
+                        <p class="font-signature text-4xl md:text-5xl text-brand-800 transform -rotate-3 select-none">Örnek Kişi</p>
+                        <p class="text-[9px] md:text-[10px] text-gray-400 mt-1 md:mt-2 tracking-widest uppercase">Uzm. Psk. Örnek Kişi</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Hizmet Alanları (Clean 3 Columns) -->
-    <section id="hizmetler" class="py-24 px-6 bg-brand-50">
+    <!-- Hizmet Alanları -->
+    <section id="hizmetler" class="py-16 md:py-24 px-6 bg-brand-50">
         <div class="max-w-[85rem] mx-auto">
             
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h3 class="text-[11px] uppercase tracking-[0.3em] text-brand-500 mb-4 font-semibold">Uzmanlık Alanları</h3>
-                <h2 class="text-4xl md:text-5xl font-serif text-brand-900 leading-tight">Nasıl yardımcı <span class="italic text-brand-600">olabilirim?</span></h2>
+            <div class="text-center mb-12 md:mb-16" data-aos="fade-up">
+                <h3 class="text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-brand-500 mb-4 font-semibold">Uzmanlık Alanları</h3>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-serif text-brand-900 leading-tight">Nasıl yardımcı <span class="italic text-brand-600">olabilirim?</span></h2>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                 <!-- Card 1 -->
-                <div class="service-card p-10 lg:p-12 rounded-sm flex flex-col group" data-aos="fade-up" data-aos-delay="100">
-                    <div class="text-5xl font-serif text-brand-300 mb-6 font-medium group-hover:text-brand-500 transition-colors duration-300">01</div>
-                    <h4 class="text-2xl font-serif text-brand-900 mb-4">Bireysel Psikoterapi</h4>
-                    <p class="text-gray-600 font-light text-base leading-relaxed mb-8 flex-1">
+                <div class="service-card p-8 md:p-10 lg:p-12 rounded-sm flex flex-col group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-4xl md:text-5xl font-serif text-brand-300 mb-4 md:mb-6 font-medium group-hover:text-brand-500 transition-colors duration-300">01</div>
+                    <h4 class="text-xl md:text-2xl font-serif text-brand-900 mb-3 md:mb-4">Bireysel Psikoterapi</h4>
+                    <p class="text-gray-600 font-light text-sm md:text-base leading-relaxed mb-6 md:mb-8 flex-1">
                         Depresyon, anksiyete, panik bozukluk, özgüven eksikliği ve hayatın getirdiği duygusal zorluklarla başa çıkmak için güvenli bir alan oluşturuyoruz. Yargısız bir ortamda kendinizi yeniden keşfedin.
                     </p>
-                    <a href="https://wa.me/905000000000" class="text-brand-600 text-sm font-medium tracking-wide hover:text-brand-900 transition flex items-center gap-2 mt-auto">
-                        Bilgi Alın <i class="fas fa-arrow-right text-xs transform group-hover:translate-x-1 transition-transform"></i>
+                    <a href="https://wa.me/905000000000" class="text-brand-600 text-xs md:text-sm font-medium tracking-wide hover:text-brand-900 transition flex items-center gap-2 mt-auto">
+                        Bilgi Alın <i class="fas fa-arrow-right text-[10px] md:text-xs transform group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
                 
                 <!-- Card 2 -->
-                <div class="service-card p-10 lg:p-12 rounded-sm flex flex-col group" data-aos="fade-up" data-aos-delay="200">
-                    <div class="text-5xl font-serif text-brand-300 mb-6 font-medium group-hover:text-brand-500 transition-colors duration-300">02</div>
-                    <h4 class="text-2xl font-serif text-brand-900 mb-4">Çift Terapisi</h4>
-                    <p class="text-gray-600 font-light text-base leading-relaxed mb-8 flex-1">
+                <div class="service-card p-8 md:p-10 lg:p-12 rounded-sm flex flex-col group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-4xl md:text-5xl font-serif text-brand-300 mb-4 md:mb-6 font-medium group-hover:text-brand-500 transition-colors duration-300">02</div>
+                    <h4 class="text-xl md:text-2xl font-serif text-brand-900 mb-3 md:mb-4">Çift Terapisi</h4>
+                    <p class="text-gray-600 font-light text-sm md:text-base leading-relaxed mb-6 md:mb-8 flex-1">
                         İletişim problemleri, çatışma çözümü, aldatma, güven inşası ve duygusal bağı güçlendirmek üzerine çiftlerle yürütülen bilimsel ve objektif danışmanlık süreci.
                     </p>
-                    <a href="https://wa.me/905000000000" class="text-brand-600 text-sm font-medium tracking-wide hover:text-brand-900 transition flex items-center gap-2 mt-auto">
-                        Bilgi Alın <i class="fas fa-arrow-right text-xs transform group-hover:translate-x-1 transition-transform"></i>
+                    <a href="https://wa.me/905000000000" class="text-brand-600 text-xs md:text-sm font-medium tracking-wide hover:text-brand-900 transition flex items-center gap-2 mt-auto">
+                        Bilgi Alın <i class="fas fa-arrow-right text-[10px] md:text-xs transform group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
 
                 <!-- Card 3 -->
-                <div class="service-card p-10 lg:p-12 rounded-sm flex flex-col group" data-aos="fade-up" data-aos-delay="300">
-                    <div class="text-5xl font-serif text-brand-300 mb-6 font-medium group-hover:text-brand-500 transition-colors duration-300">03</div>
-                    <h4 class="text-2xl font-serif text-brand-900 mb-4">Travma ve EMDR</h4>
-                    <p class="text-gray-600 font-light text-base leading-relaxed mb-8 flex-1">
+                <div class="service-card p-8 md:p-10 lg:p-12 rounded-sm flex flex-col group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-4xl md:text-5xl font-serif text-brand-300 mb-4 md:mb-6 font-medium group-hover:text-brand-500 transition-colors duration-300">03</div>
+                    <h4 class="text-xl md:text-2xl font-serif text-brand-900 mb-3 md:mb-4">Travma ve EMDR</h4>
+                    <p class="text-gray-600 font-light text-sm md:text-base leading-relaxed mb-6 md:mb-8 flex-1">
                         Geçmiş travmatik deneyimlerin (kaza, kayıp, istismar) bugün üzerindeki olumsuz etkilerini dünyaca kabul görmüş EMDR tekniği ile çalışarak kalıcı iyileşme sağlıyoruz.
                     </p>
-                    <a href="https://wa.me/905000000000" class="text-brand-600 text-sm font-medium tracking-wide hover:text-brand-900 transition flex items-center gap-2 mt-auto">
-                        Bilgi Alın <i class="fas fa-arrow-right text-xs transform group-hover:translate-x-1 transition-transform"></i>
+                    <a href="https://wa.me/905000000000" class="text-brand-600 text-xs md:text-sm font-medium tracking-wide hover:text-brand-900 transition flex items-center gap-2 mt-auto">
+                        Bilgi Alın <i class="fas fa-arrow-right text-[10px] md:text-xs transform group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
             </div>
@@ -401,44 +432,44 @@
     </section>
 
     <!-- Süreç -->
-    <section id="surec" class="py-24 px-6 bg-white">
+    <section id="surec" class="py-16 md:py-24 px-6 bg-white overflow-hidden">
         <div class="max-w-[85rem] mx-auto">
-            <div class="text-center mb-20" data-aos="fade-up">
-                <h3 class="text-[11px] uppercase tracking-[0.3em] text-brand-500 mb-4 font-semibold">Adım Adım</h3>
-                <h2 class="text-4xl md:text-5xl font-serif text-brand-900">Terapi Süreci</h2>
+            <div class="text-center mb-12 md:mb-20" data-aos="fade-up">
+                <h3 class="text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-brand-500 mb-4 font-semibold">Adım Adım</h3>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-serif text-brand-900">Terapi Süreci</h2>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-                <!-- Animated Connecting Line -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 relative">
+                <!-- Animated Connecting Line (Desktop Only) -->
                 <div class="hidden md:block flowing-line-container">
                     <div class="flowing-line-glow"></div>
                 </div>
                 
                 <!-- Step 1 -->
                 <div class="relative text-center group" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-36 h-36 mx-auto bg-brand-50 rounded-full flex items-center justify-center border border-brand-200 mb-8 z-10 relative group-hover:bg-brand-500 group-hover:border-brand-500 transition-colors duration-500">
-                        <i class="fab fa-whatsapp text-4xl text-brand-500 group-hover:text-white transition-colors duration-500"></i>
+                    <div class="w-24 h-24 md:w-36 md:h-36 mx-auto bg-brand-50 rounded-full flex items-center justify-center border border-brand-200 mb-6 md:mb-8 z-10 relative group-hover:bg-brand-500 group-hover:border-brand-500 transition-colors duration-500">
+                        <i class="fab fa-whatsapp text-3xl md:text-4xl text-brand-500 group-hover:text-white transition-colors duration-500"></i>
                     </div>
-                    <h4 class="text-2xl font-serif mb-3 text-brand-900">1. İlk İletişim</h4>
-                    <p class="text-base font-light text-gray-600 px-4 leading-relaxed">Asistanımızla veya benimle iletişime geçerek sürece dair ön bilgi alabilir ve tanışma randevusu oluşturabilirsiniz.</p>
+                    <h4 class="text-xl md:text-2xl font-serif mb-2 md:mb-3 text-brand-900">1. İlk İletişim</h4>
+                    <p class="text-sm md:text-base font-light text-gray-600 px-2 md:px-4 leading-relaxed">Asistanımızla veya benimle iletişime geçerek sürece dair ön bilgi alabilir ve tanışma randevusu oluşturabilirsiniz.</p>
                 </div>
                 
                 <!-- Step 2 -->
                 <div class="relative text-center group" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-36 h-36 mx-auto bg-brand-900 rounded-full flex items-center justify-center shadow-xl mb-8 z-10 relative group-hover:bg-brand-500 transition-colors duration-500">
-                        <i class="far fa-comments text-4xl text-brand-100 group-hover:text-white transition-colors duration-500"></i>
+                    <div class="w-24 h-24 md:w-36 md:h-36 mx-auto bg-brand-900 rounded-full flex items-center justify-center shadow-xl mb-6 md:mb-8 z-10 relative group-hover:bg-brand-500 transition-colors duration-500">
+                        <i class="far fa-comments text-3xl md:text-4xl text-brand-100 group-hover:text-white transition-colors duration-500"></i>
                     </div>
-                    <h4 class="text-2xl font-serif mb-3 text-brand-900">2. Değerlendirme</h4>
-                    <p class="text-base font-light text-gray-600 px-4 leading-relaxed">İlk seansımızda sizi detaylıca tanır, beklentilerinizi anlar ve size en uygun terapi haritasını çizeriz.</p>
+                    <h4 class="text-xl md:text-2xl font-serif mb-2 md:mb-3 text-brand-900">2. Değerlendirme</h4>
+                    <p class="text-sm md:text-base font-light text-gray-600 px-2 md:px-4 leading-relaxed">İlk seansımızda sizi detaylıca tanır, beklentilerinizi anlar ve size en uygun terapi haritasını çizeriz.</p>
                 </div>
                 
                 <!-- Step 3 -->
                 <div class="relative text-center group" data-aos="fade-up" data-aos-delay="300">
-                    <div class="w-36 h-36 mx-auto bg-brand-50 rounded-full flex items-center justify-center border border-brand-200 mb-8 z-10 relative group-hover:bg-brand-500 group-hover:border-brand-500 transition-colors duration-500">
-                        <i class="fas fa-leaf text-4xl text-brand-500 group-hover:text-white transition-colors duration-500"></i>
+                    <div class="w-24 h-24 md:w-36 md:h-36 mx-auto bg-brand-50 rounded-full flex items-center justify-center border border-brand-200 mb-6 md:mb-8 z-10 relative group-hover:bg-brand-500 group-hover:border-brand-500 transition-colors duration-500">
+                        <i class="fas fa-leaf text-3xl md:text-4xl text-brand-500 group-hover:text-white transition-colors duration-500"></i>
                     </div>
-                    <h4 class="text-2xl font-serif mb-3 text-brand-900">3. İyileşme</h4>
-                    <p class="text-base font-light text-gray-600 px-4 leading-relaxed">Belirlenen hedefler doğrultusunda, güvenli bir bağ kurarak haftalık periyotlarla iyileşme sürecine başlarız.</p>
+                    <h4 class="text-xl md:text-2xl font-serif mb-2 md:mb-3 text-brand-900">3. İyileşme</h4>
+                    <p class="text-sm md:text-base font-light text-gray-600 px-2 md:px-4 leading-relaxed">Belirlenen hedefler doğrultusunda, güvenli bir bağ kurarak haftalık periyotlarla iyileşme sürecine başlarız.</p>
                 </div>
             </div>
             
@@ -446,21 +477,21 @@
     </section>
 
     <!-- Comprehensive Footer -->
-    <footer id="iletisim" class="bg-brand-900 text-brand-100 pt-20 pb-10 px-6 border-t-[8px] border-brand-500 relative">
-        <div class="max-w-[85rem] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+    <footer id="iletisim" class="bg-brand-900 text-brand-100 pt-16 md:pt-20 pb-8 md:pb-10 px-6 border-t-[6px] md:border-t-[8px] border-brand-500 relative">
+        <div class="max-w-[85rem] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-12 md:mb-16">
             
             <!-- Brand -->
             <div data-aos="fade-up" data-aos-delay="100">
                 <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-full overflow-hidden border border-brand-500 shadow-sm shrink-0">
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-brand-500 shadow-sm shrink-0">
                         <img src="portrait.jpg" alt="Logo" class="w-full h-full object-cover object-top grayscale opacity-80">
                     </div>
                     <div>
-                        <h4 class="text-xl font-serif text-white tracking-wide">Örnek Kişi</h4>
-                        <p class="text-[10px] uppercase tracking-widest text-brand-300">Klinik Psikolog</p>
+                        <h4 class="text-lg md:text-xl font-serif text-white tracking-wide">Örnek Kişi</h4>
+                        <p class="text-[9px] md:text-[10px] uppercase tracking-widest text-brand-300">Klinik Psikolog</p>
                     </div>
                 </div>
-                <p class="text-sm text-brand-300 font-light leading-relaxed mb-6">
+                <p class="text-xs md:text-sm text-brand-300 font-light leading-relaxed mb-6">
                     Bilimsel temelli, şefkat odaklı psikoterapi hizmetleri. İçsel huzurunuza giden yolda güvenilir rehberiniz.
                 </p>
                 <div class="flex gap-4">
@@ -472,8 +503,8 @@
             
             <!-- Quick Links -->
             <div data-aos="fade-up" data-aos-delay="200">
-                <h4 class="text-lg font-serif text-white mb-6">Hızlı Bağlantılar</h4>
-                <ul class="space-y-3 text-sm text-brand-300 font-light">
+                <h4 class="text-base md:text-lg font-serif text-white mb-4 md:mb-6">Hızlı Bağlantılar</h4>
+                <ul class="space-y-3 text-xs md:text-sm text-brand-300 font-light">
                     <li><a href="#anasayfa" class="hover:text-brand-500 hover:translate-x-1 inline-block transition-transform flex items-center gap-2"><i class="fas fa-chevron-right text-[10px] text-brand-500"></i> Anasayfa</a></li>
                     <li><a href="#hakkimda" class="hover:text-brand-500 hover:translate-x-1 inline-block transition-transform flex items-center gap-2"><i class="fas fa-chevron-right text-[10px] text-brand-500"></i> Hakkımda</a></li>
                     <li><a href="#hizmetler" class="hover:text-brand-500 hover:translate-x-1 inline-block transition-transform flex items-center gap-2"><i class="fas fa-chevron-right text-[10px] text-brand-500"></i> Hizmetlerimiz</a></li>
@@ -484,8 +515,8 @@
 
             <!-- Services -->
             <div data-aos="fade-up" data-aos-delay="300">
-                <h4 class="text-lg font-serif text-white mb-6">Hizmetler</h4>
-                <ul class="space-y-3 text-sm text-brand-300 font-light">
+                <h4 class="text-base md:text-lg font-serif text-white mb-4 md:mb-6">Hizmetler</h4>
+                <ul class="space-y-3 text-xs md:text-sm text-brand-300 font-light">
                     <li><a href="#" class="hover:text-white transition">Bireysel Psikoterapi</a></li>
                     <li><a href="#" class="hover:text-white transition">Çift ve Evlilik Terapisi</a></li>
                     <li><a href="#" class="hover:text-white transition">Ergen Psikoterapisi</a></li>
@@ -496,8 +527,8 @@
 
             <!-- Contact -->
             <div data-aos="fade-up" data-aos-delay="400">
-                <h4 class="text-lg font-serif text-white mb-6">İletişim</h4>
-                <ul class="space-y-4 text-sm text-brand-300 font-light">
+                <h4 class="text-base md:text-lg font-serif text-white mb-4 md:mb-6">İletişim</h4>
+                <ul class="space-y-3 md:space-y-4 text-xs md:text-sm text-brand-300 font-light">
                     <li class="flex items-start gap-3">
                         <i class="fas fa-map-marker-alt mt-1 text-brand-500"></i>
                         <span>Teşvikiye Mah. Hüsrev Gerede Cad.<br>No: 123, D: 4, Şişli / İstanbul</span>
@@ -517,7 +548,7 @@
             </div>
         </div>
         
-        <div class="max-w-[85rem] mx-auto pt-8 border-t border-brand-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-light text-brand-400">
+        <div class="max-w-[85rem] mx-auto pt-6 md:pt-8 border-t border-brand-800 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] md:text-xs font-light text-brand-400 text-center md:text-left">
             <p>© 2026 Klinik Psikolog. Tüm Hakları Saklıdır.</p>
             <p>Tasarım ve Geliştirme: <span class="text-white font-medium">Anıl Mete Yıldız</span></p>
         </div>
@@ -525,6 +556,23 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // Mobile Menu Logic
+        const mobileMenu = document.getElementById('mobile-menu');
+        const openMenuBtn = document.getElementById('open-menu');
+        const closeMenuBtn = document.getElementById('close-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        openMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('translate-x-full');
+        });
+        
+        const closeMenu = () => {
+            mobileMenu.classList.add('translate-x-full');
+        };
+
+        closeMenuBtn.addEventListener('click', closeMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
+
         // Hero Text Rotation Logic
         const heroSlides = [
             {
