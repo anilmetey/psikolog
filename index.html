@@ -135,6 +135,34 @@
         #splash {
             transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
         }
+
+        /* Flowing Line Animation for Process Steps */
+        .flowing-line-container {
+            position: absolute;
+            top: 4.5rem;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background-color: #f0ece5;
+            overflow: hidden;
+            z-index: 0;
+            border-radius: 9999px;
+        }
+        .flowing-line-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 25%;
+            background: linear-gradient(90deg, transparent, #9d8164, transparent);
+            animation: flowRight 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        @keyframes flowRight {
+            0% { transform: translateX(-150%); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateX(450%); opacity: 0; }
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-brand-300 selection:text-white relative">
@@ -367,8 +395,10 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-                <!-- Connecting Line -->
-                <div class="hidden md:block absolute top-[4.5rem] left-[16%] right-[16%] h-[1px] border-t-2 border-dashed border-brand-200"></div>
+                <!-- Animated Connecting Line -->
+                <div class="hidden md:block flowing-line-container">
+                    <div class="flowing-line-glow"></div>
+                </div>
                 
                 <!-- Step 1 -->
                 <div class="relative text-center group" data-aos="fade-up" data-aos-delay="100">
