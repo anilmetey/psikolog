@@ -24,85 +24,126 @@
                     },
                     colors: {
                         sand: '#C3B6A6',
-                        sandLight: '#E8E2DA',
+                        sandLight: '#EAE5DE',
                         ink: '#1A1A1A',
-                        paper: '#FDFCF9',
+                        paper: '#FBF9F6',
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #FDFCF9; color: #1A1A1A; overflow-x: hidden; }
+        body { background-color: #FBF9F6; color: #1A1A1A; overflow-x: hidden; }
         
+        /* Premium Background Orbs for Glassmorphism */
+        .bg-orb-1 {
+            position: fixed; top: -10%; left: -10%; width: 50vw; height: 50vw;
+            background: radial-gradient(circle, rgba(195,182,166,0.15) 0%, rgba(251,249,246,0) 70%);
+            border-radius: 50%; filter: blur(80px); z-index: -1; pointer-events: none;
+        }
+        .bg-orb-2 {
+            position: fixed; bottom: -20%; right: -10%; width: 60vw; height: 60vw;
+            background: radial-gradient(circle, rgba(234,229,222,0.4) 0%, rgba(251,249,246,0) 70%);
+            border-radius: 50%; filter: blur(100px); z-index: -1; pointer-events: none;
+        }
+
+        /* Extreme Glassmorphism */
+        .glass-extreme {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+        }
+        
+        .glass-nav {
+            background: rgba(251, 249, 246, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 4px;
+            transition: all 0.5s ease;
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        }
+
         .arch-image {
             border-radius: 1000px 1000px 0 0;
             overflow: hidden;
-            border: 1px solid #E8E2DA;
             position: relative;
         }
-        
         .arch-image::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.05);
-            pointer-events: none;
-        }
-
-        .glass-nav {
-            background: rgba(253, 252, 249, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(195, 182, 166, 0.2);
-        }
-
-        .service-card {
-            border-bottom: 1px solid #E8E2DA;
-            transition: all 0.5s ease;
-        }
-        
-        .service-card:hover {
-            background-color: #F8F6F2;
-            padding-left: 1rem;
-            padding-right: 1rem;
+            content: ''; position: absolute; inset: 0;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.05); pointer-events: none;
         }
 
         .btn-premium {
-            background: #1A1A1A;
+            background: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(10px);
             color: #FDFCF9;
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(26, 26, 26, 1);
         }
         .btn-premium:hover {
-            background: #C3B6A6;
+            background: rgba(195, 182, 166, 0.9);
+            border-color: rgba(195, 182, 166, 1);
             color: #1A1A1A;
         }
         
         .text-outline {
             color: transparent;
-            -webkit-text-stroke: 1px #C3B6A6;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
         }
         
-        /* Subtle noise texture for premium feel */
         .noise-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.03;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9998; opacity: 0.03;
             background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+
+        /* Splash Screen Animations */
+        #splash {
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
+        }
+        .reveal-text {
+            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+            transition: clip-path 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .reveal-text.active {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
         }
     </style>
 </head>
 <body class="antialiased selection:bg-sand selection:text-ink">
 
+    <!-- Splash Screen -->
+    <div id="splash" class="fixed inset-0 z-[99999] bg-paper flex flex-col items-center justify-center">
+        <div class="overflow-hidden">
+            <h1 class="reveal-text text-3xl md:text-5xl font-serif text-ink tracking-[0.3em] uppercase">AWARENESS</h1>
+        </div>
+        <div class="w-0 h-[1px] bg-ink mt-8 transition-all duration-1000 ease-in-out" id="splash-line"></div>
+    </div>
+
+    <!-- Background Orbs -->
+    <div class="bg-orb-1"></div>
+    <div class="bg-orb-2"></div>
     <div class="noise-bg"></div>
 
     <!-- Floating WhatsApp -->
-    <a href="https://wa.me/905000000000" target="_blank" data-aos="zoom-in" data-aos-delay="800" class="fixed bottom-6 right-6 bg-ink text-paper w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-xl hover:bg-sand hover:text-ink transition-all duration-300 z-50">
-        <i class="fab fa-whatsapp"></i>
+    <a href="https://wa.me/905000000000" target="_blank" data-aos="fade-up" data-aos-delay="2000" class="fixed bottom-8 right-8 glass-extreme w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-2xl hover:bg-ink hover:text-white transition-all duration-500 z-50 group">
+        <i class="fab fa-whatsapp text-ink group-hover:text-white transition-colors duration-500"></i>
     </a>
 
     <!-- Navbar -->
@@ -110,14 +151,14 @@
         <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
             <div class="flex items-center gap-4">
                 <div>
-                    <h1 class="text-xl font-serif text-ink tracking-wide">Uzm. Psk. Örnek Kişi</h1>
-                    <p class="text-[10px] text-gray-500 uppercase tracking-[0.2em] mt-0.5">Klinik Psikolog</p>
+                    <h1 class="text-xl font-serif text-ink tracking-widest">Uzm. Psk. Örnek Kişi</h1>
+                    <p class="text-[9px] text-gray-500 uppercase tracking-[0.3em] mt-1">Klinik Psikolog</p>
                 </div>
             </div>
-            <div class="hidden md:flex items-center gap-10 text-xs font-medium text-gray-500 uppercase tracking-widest">
+            <div class="hidden md:flex items-center gap-12 text-[11px] font-medium text-gray-600 uppercase tracking-[0.2em]">
                 <a href="#hizmetler" class="hover:text-ink transition duration-300">Uzmanlıklar</a>
                 <a href="#surec" class="hover:text-ink transition duration-300">Süreç</a>
-                <a href="https://wa.me/905000000000" target="_blank" class="border border-ink text-ink px-6 py-2.5 hover:bg-ink hover:text-white transition duration-500 rounded-sm">
+                <a href="https://wa.me/905000000000" target="_blank" class="glass-extreme px-6 py-3 hover:bg-ink hover:text-white transition duration-500 rounded-sm">
                     Randevu Al
                 </a>
             </div>
@@ -125,15 +166,15 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-40 pb-20 px-6 min-h-[90vh] flex items-center relative">
-        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-8 items-center z-10">
+    <section class="pt-40 pb-20 px-6 min-h-[90vh] flex items-center relative z-10">
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-8 items-center">
             
-            <div class="order-2 md:order-1" data-aos="fade-up" data-aos-duration="1000">
-                <div class="flex items-center gap-3 mb-8">
-                    <div class="w-12 h-[1px] bg-sand"></div>
-                    <span class="text-xs uppercase tracking-[0.2em] text-gray-500">Online & Yüz Yüze Psikoterapi</span>
+            <div class="order-2 md:order-1" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="500">
+                <div class="flex items-center gap-4 mb-10">
+                    <div class="w-16 h-[1px] bg-sand"></div>
+                    <span class="text-[10px] uppercase tracking-[0.3em] text-gray-500">Online & Yüz Yüze Psikoterapi</span>
                 </div>
-                <h2 class="text-5xl md:text-6xl lg:text-7xl font-serif text-ink leading-[1.1] mb-8">
+                <h2 class="text-5xl md:text-6xl lg:text-[5rem] font-serif text-ink leading-[1.05] mb-8">
                     İçsel huzura <br>
                     <span class="italic text-sand">giden yolu</span> <br>
                     birlikte keşfedelim.
@@ -143,104 +184,97 @@
                 </p>
                 
                 <div class="flex items-center gap-6">
-                    <a href="https://wa.me/905000000000" target="_blank" class="btn-premium px-8 py-4 text-sm uppercase tracking-widest rounded-sm flex items-center gap-3">
-                        Ön Görüşme Ayarla <i class="fas fa-arrow-right text-xs"></i>
+                    <a href="https://wa.me/905000000000" target="_blank" class="btn-premium px-8 py-4 text-xs uppercase tracking-[0.2em] rounded-sm flex items-center gap-3">
+                        Ön Görüşme Ayarla <i class="fas fa-long-arrow-alt-right text-sm"></i>
                     </a>
                 </div>
             </div>
             
-            <div class="order-1 md:order-2 flex justify-center md:justify-end relative" data-aos="fade-left" data-aos-duration="1200">
-                <!-- Arch Image -->
-                <div class="w-[80%] md:w-[75%] aspect-[3/4] arch-image bg-sandLight relative flex items-center justify-center">
-                    <div class="text-center p-8 opacity-40">
-                        <i class="fas fa-image text-4xl mb-4 text-ink"></i>
-                        <p class="font-serif text-sm text-ink">Profesyonel<br>Fotoğraf Alanı</p>
+            <div class="order-1 md:order-2 flex justify-center md:justify-end relative" data-aos="fade-left" data-aos-duration="1500" data-aos-delay="700">
+                <!-- Arch Image with Glassmorphism Border -->
+                <div class="w-[80%] md:w-[70%] aspect-[3/4] arch-image glass-extreme relative flex items-center justify-center p-2">
+                    <div class="w-full h-full arch-image bg-white/50 flex items-center justify-center border border-white">
+                        <div class="text-center p-8 opacity-30">
+                            <i class="fas fa-image text-4xl mb-4 text-ink"></i>
+                            <p class="font-serif text-sm text-ink">Profesyonel<br>Fotoğraf Alanı</p>
+                        </div>
                     </div>
                 </div>
-                <!-- Floating badge -->
-                <div class="absolute bottom-10 -left-6 md:-left-12 bg-white p-6 shadow-xl border border-gray-100 rounded-sm" data-aos="fade-up" data-aos-delay="600">
-                    <p class="text-3xl font-serif text-ink mb-1">10+</p>
-                    <p class="text-[10px] uppercase tracking-widest text-gray-500">Yıllık Klinik<br>Deneyim</p>
+                <!-- Floating Glass Badge -->
+                <div class="absolute bottom-12 -left-4 md:-left-12 glass-extreme p-6 shadow-2xl rounded-sm" data-aos="fade-up" data-aos-delay="1000">
+                    <p class="text-4xl font-serif text-ink mb-2">10+</p>
+                    <p class="text-[9px] uppercase tracking-[0.2em] text-gray-600 leading-relaxed">Yıllık Klinik<br>Deneyim</p>
                 </div>
             </div>
 
         </div>
     </section>
 
-    <!-- Marquee / Ticker (Subtle) -->
-    <div class="py-8 border-y border-sandLight overflow-hidden bg-white/50">
-        <div class="flex whitespace-nowrap opacity-60 text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium items-center justify-around">
+    <!-- Marquee / Ticker (Glassmorphic) -->
+    <div class="py-10 glass-extreme border-x-0 overflow-hidden relative z-10">
+        <div class="flex whitespace-nowrap opacity-60 text-[10px] uppercase tracking-[0.3em] font-medium items-center justify-around">
             <span>Yetişkin Psikoterapisi</span>
-            <span class="w-1 h-1 rounded-full bg-sand mx-8"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-sand mx-10"></span>
             <span>Çift ve İlişki Danışmanlığı</span>
-            <span class="w-1 h-1 rounded-full bg-sand mx-8"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-sand mx-10"></span>
             <span>EMDR Terapisi</span>
-            <span class="w-1 h-1 rounded-full bg-sand mx-8"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-sand mx-10"></span>
             <span>Bilişsel Davranışçı Terapi</span>
-            <span class="w-1 h-1 rounded-full bg-sand mx-8 hidden md:block"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-sand mx-10 hidden md:block"></span>
             <span class="hidden md:block">Ergen Psikoterapisi</span>
         </div>
     </div>
 
-    <!-- Hizmet Alanları (Minimalist Style) -->
-    <section id="hizmetler" class="py-32 px-6 bg-paper">
+    <!-- Hizmet Alanları (Glass Cards) -->
+    <section id="hizmetler" class="py-40 px-6 relative z-10">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16">
             
             <div class="md:col-span-4" data-aos="fade-right">
-                <div class="sticky top-32">
-                    <h3 class="text-xs uppercase tracking-[0.2em] text-gray-500 mb-4">Uzmanlık Alanları</h3>
-                    <h2 class="text-4xl md:text-5xl font-serif text-ink leading-tight mb-6">Nasıl yardımcı <br><span class="italic text-sand">olabilirim?</span></h2>
+                <div class="sticky top-40">
+                    <h3 class="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-6">Uzmanlık Alanları</h3>
+                    <h2 class="text-4xl md:text-5xl font-serif text-ink leading-tight mb-8">Nasıl yardımcı <br><span class="italic text-sand">olabilirim?</span></h2>
                     <p class="text-gray-500 font-light leading-relaxed mb-8">
                         Her bireyin hikayesi biriciktir. Sizin ihtiyaçlarınıza en uygun bilimsel yöntemlerle kişiselleştirilmiş bir terapi süreci yürütüyoruz.
                     </p>
                 </div>
             </div>
             
-            <div class="md:col-span-8 flex flex-col">
-                <!-- Item 1 -->
-                <div class="service-card py-10" data-aos="fade-up" data-aos-delay="100">
-                    <div class="flex flex-col md:flex-row md:items-center gap-6">
-                        <div class="text-4xl font-serif text-sandLight w-16">01</div>
+            <div class="md:col-span-8 flex flex-col gap-6">
+                <!-- Glass Card 1 -->
+                <div class="glass-card p-10 md:p-12" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="text-5xl font-serif text-sandLight opacity-50">01</div>
                         <div class="flex-1">
-                            <h4 class="text-2xl font-serif text-ink mb-3">Bireysel Psikoterapi</h4>
-                            <p class="text-gray-500 font-light text-sm leading-relaxed max-w-xl">
-                                Depresyon, anksiyete, panik bozukluk, özgüven eksikliği ve hayatın getirdiği duygusal zorluklarla başa çıkmak için güvenli bir alan.
+                            <h4 class="text-2xl font-serif text-ink mb-4">Bireysel Psikoterapi</h4>
+                            <p class="text-gray-600 font-light text-sm leading-relaxed">
+                                Depresyon, anksiyete, panik bozukluk, özgüven eksikliği ve hayatın getirdiği duygusal zorluklarla başa çıkmak için güvenli bir alan oluşturuyoruz. Bilimsel metotlarla kalıcı iyileşme hedeflenir.
                             </p>
-                        </div>
-                        <div>
-                            <i class="fas fa-arrow-right text-sand opacity-50"></i>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Item 2 -->
-                <div class="service-card py-10" data-aos="fade-up" data-aos-delay="200">
-                    <div class="flex flex-col md:flex-row md:items-center gap-6">
-                        <div class="text-4xl font-serif text-sandLight w-16">02</div>
+                <!-- Glass Card 2 -->
+                <div class="glass-card p-10 md:p-12" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="text-5xl font-serif text-sandLight opacity-50">02</div>
                         <div class="flex-1">
-                            <h4 class="text-2xl font-serif text-ink mb-3">Çift ve İlişki Terapisi</h4>
-                            <p class="text-gray-500 font-light text-sm leading-relaxed max-w-xl">
-                                İletişim problemleri, çatışma çözümü, güven inşası ve duygusal bağı yeniden güçlendirmek üzerine çiftlerle yapılan çalışmalar.
+                            <h4 class="text-2xl font-serif text-ink mb-4">Çift ve İlişki Terapisi</h4>
+                            <p class="text-gray-600 font-light text-sm leading-relaxed">
+                                İletişim problemleri, çatışma çözümü, güven inşası ve duygusal bağı yeniden güçlendirmek üzerine çiftlerle yapılan sistematik çalışmalar bütünüdür.
                             </p>
-                        </div>
-                        <div>
-                            <i class="fas fa-arrow-right text-sand opacity-50"></i>
                         </div>
                     </div>
                 </div>
 
-                <!-- Item 3 -->
-                <div class="service-card py-10 border-b-0" data-aos="fade-up" data-aos-delay="300">
-                    <div class="flex flex-col md:flex-row md:items-center gap-6">
-                        <div class="text-4xl font-serif text-sandLight w-16">03</div>
+                <!-- Glass Card 3 -->
+                <div class="glass-card p-10 md:p-12" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="text-5xl font-serif text-sandLight opacity-50">03</div>
                         <div class="flex-1">
-                            <h4 class="text-2xl font-serif text-ink mb-3">Travma ve EMDR Terapisi</h4>
-                            <p class="text-gray-500 font-light text-sm leading-relaxed max-w-xl">
-                                Geçmiş travmatik deneyimlerin bugün üzerindeki olumsuz etkilerini bilimsel EMDR tekniği ile çalışarak iyileşme sağlama.
+                            <h4 class="text-2xl font-serif text-ink mb-4">Travma ve EMDR Terapisi</h4>
+                            <p class="text-gray-600 font-light text-sm leading-relaxed">
+                                Geçmiş travmatik deneyimlerin bugün üzerindeki olumsuz etkilerini dünyaca kabul görmüş EMDR tekniği ile çalışarak bütüncül bir iyileşme sağlıyoruz.
                             </p>
-                        </div>
-                        <div>
-                            <i class="fas fa-arrow-right text-sand opacity-50"></i>
                         </div>
                     </div>
                 </div>
@@ -248,82 +282,82 @@
         </div>
     </section>
 
-    <!-- Quote / Aesthetic Section -->
-    <section class="py-32 px-6 bg-ink text-paper relative overflow-hidden">
+    <!-- Quote / Aesthetic Section (Glassmorphic Dark) -->
+    <section class="py-40 px-6 relative overflow-hidden bg-ink/95 backdrop-blur-2xl">
         <div class="max-w-4xl mx-auto text-center relative z-10" data-aos="zoom-in" data-aos-duration="1500">
-            <i class="fas fa-quote-left text-4xl text-white/10 mb-8"></i>
-            <h2 class="text-3xl md:text-5xl font-serif leading-tight mb-8">
+            <i class="fas fa-quote-left text-4xl text-white/10 mb-12"></i>
+            <h2 class="text-3xl md:text-5xl font-serif leading-tight mb-12 text-paper">
                 "İyileşme, kendi karanlığımızla yüzleşecek cesareti bulduğumuzda <span class="italic text-sand">başlar.</span>"
             </h2>
             <div class="w-16 h-[1px] bg-sand mx-auto"></div>
         </div>
         <!-- Huge background text outline -->
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[15vw] font-serif text-outline whitespace-nowrap opacity-10 pointer-events-none select-none">
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[15vw] font-serif text-outline whitespace-nowrap pointer-events-none select-none">
             AWARENESS
         </div>
     </section>
 
     <!-- Süreç -->
-    <section id="surec" class="py-32 px-6 bg-sandLight/20">
+    <section id="surec" class="py-40 px-6 relative z-10">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-24" data-aos="fade-up">
-                <h3 class="text-xs uppercase tracking-[0.2em] text-gray-500 mb-4">Adım Adım</h3>
+                <h3 class="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-6">Adım Adım</h3>
                 <h2 class="text-4xl md:text-5xl font-serif text-ink">Terapi Süreci</h2>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 relative">
                 <!-- Connecting Line -->
-                <div class="hidden md:block absolute top-12 left-20 right-20 h-[1px] bg-sand/40"></div>
+                <div class="hidden md:block absolute top-16 left-24 right-24 h-[1px] bg-sand/30"></div>
                 
                 <!-- Step 1 -->
                 <div class="relative text-center" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-24 h-24 mx-auto bg-paper rounded-full flex items-center justify-center border border-sand shadow-sm mb-8 z-10 relative">
-                        <span class="font-serif text-2xl text-ink">01</span>
+                    <div class="w-32 h-32 mx-auto glass-extreme rounded-full flex items-center justify-center shadow-lg mb-8 z-10 relative">
+                        <span class="font-serif text-3xl text-ink">01</span>
                     </div>
                     <h4 class="text-xl font-serif mb-4 text-ink">Ön Görüşme</h4>
-                    <p class="text-sm font-light text-gray-600 px-4">WhatsApp üzerinden iletişime geçerek değerlendirme randevusu oluştururuz.</p>
+                    <p class="text-sm font-light text-gray-600 px-6 leading-relaxed">WhatsApp üzerinden iletişime geçerek tanışma randevusu oluştururuz.</p>
                 </div>
                 
                 <!-- Step 2 -->
                 <div class="relative text-center" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-24 h-24 mx-auto bg-ink rounded-full flex items-center justify-center border border-ink shadow-lg mb-8 z-10 relative">
-                        <span class="font-serif text-2xl text-paper">02</span>
+                    <div class="w-32 h-32 mx-auto bg-ink/90 backdrop-blur-xl rounded-full flex items-center justify-center shadow-2xl mb-8 z-10 relative border border-white/20">
+                        <span class="font-serif text-3xl text-paper">02</span>
                     </div>
                     <h4 class="text-xl font-serif mb-4 text-ink">İlk Seans</h4>
-                    <p class="text-sm font-light text-gray-600 px-4">Sizi tanımaya, beklentilerinizi ve ihtiyaçlarınızı anlamaya odaklandığımız aşama.</p>
+                    <p class="text-sm font-light text-gray-600 px-6 leading-relaxed">Sizi tanımaya, beklentilerinizi ve ihtiyaçlarınızı anlamaya odaklandığımız aşama.</p>
                 </div>
                 
                 <!-- Step 3 -->
                 <div class="relative text-center" data-aos="fade-up" data-aos-delay="300">
-                    <div class="w-24 h-24 mx-auto bg-paper rounded-full flex items-center justify-center border border-sand shadow-sm mb-8 z-10 relative">
-                        <span class="font-serif text-2xl text-ink">03</span>
+                    <div class="w-32 h-32 mx-auto glass-extreme rounded-full flex items-center justify-center shadow-lg mb-8 z-10 relative">
+                        <span class="font-serif text-3xl text-ink">03</span>
                     </div>
                     <h4 class="text-xl font-serif mb-4 text-ink">Terapi Yolculuğu</h4>
-                    <p class="text-sm font-light text-gray-600 px-4">Belirlenen hedefler doğrultusunda, bilimsel ekollerle ilerleyen periyodik süreç.</p>
+                    <p class="text-sm font-light text-gray-600 px-6 leading-relaxed">Belirlenen hedefler doğrultusunda, bilimsel ekollerle ilerleyen periyodik süreç.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-16 px-6 border-t border-sandLight bg-paper">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+    <footer class="py-20 px-6 glass-extreme border-b-0 border-x-0 relative z-10 mt-20">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
             <div class="text-center md:text-left">
-                <h4 class="text-2xl font-serif text-ink mb-2">Uzm. Psk. Örnek Kişi</h4>
-                <p class="text-[10px] uppercase tracking-widest text-gray-500">Klinik Psikolog & Psikoterapist</p>
+                <h4 class="text-2xl font-serif text-ink mb-3">Uzm. Psk. Örnek Kişi</h4>
+                <p class="text-[10px] uppercase tracking-[0.2em] text-gray-500">Klinik Psikolog & Psikoterapist</p>
             </div>
             
             <div class="flex gap-6">
-                <a href="#" class="text-ink hover:text-sand transition duration-300">
-                    <i class="fab fa-instagram text-xl"></i>
+                <a href="#" class="w-12 h-12 rounded-full glass-extreme flex items-center justify-center text-ink hover:bg-ink hover:text-white transition duration-500">
+                    <i class="fab fa-instagram text-lg"></i>
                 </a>
-                <a href="#" class="text-ink hover:text-sand transition duration-300">
-                    <i class="fab fa-linkedin-in text-xl"></i>
+                <a href="#" class="w-12 h-12 rounded-full glass-extreme flex items-center justify-center text-ink hover:bg-ink hover:text-white transition duration-500">
+                    <i class="fab fa-linkedin-in text-lg"></i>
                 </a>
             </div>
         </div>
         
-        <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-sandLight flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-medium text-gray-400 uppercase tracking-widest">
+        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/50 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-medium text-gray-500 uppercase tracking-[0.2em]">
             <p>© 2026 Tüm Hakları Saklıdır.</p>
             <p>Tasarım: <span class="text-ink">Anıl Mete Yıldız</span></p>
         </div>
@@ -331,11 +365,39 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 1000,
-            once: true,
-            offset: 100,
-            easing: 'ease-out-cubic'
+        // Splash Screen Logic
+        window.addEventListener('load', () => {
+            const splash = document.getElementById('splash');
+            const splashText = document.querySelector('.reveal-text');
+            const splashLine = document.getElementById('splash-line');
+            
+            // Step 1: Reveal Text
+            setTimeout(() => {
+                splashText.classList.add('active');
+            }, 300);
+
+            // Step 2: Expand Line
+            setTimeout(() => {
+                splashLine.classList.remove('w-0');
+                splashLine.classList.add('w-24');
+            }, 800);
+
+            // Step 3: Slide up & Hide Splash
+            setTimeout(() => {
+                splash.style.transform = 'translateY(-100%)';
+            }, 2500);
+            
+            setTimeout(() => {
+                splash.style.display = 'none';
+                
+                // Initialize AOS only after splash screen hides
+                AOS.init({
+                    duration: 1200,
+                    once: true,
+                    offset: 100,
+                    easing: 'ease-out-cubic'
+                });
+            }, 3500);
         });
     </script>
 </body>
